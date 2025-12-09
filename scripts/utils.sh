@@ -397,20 +397,26 @@ install_brew_package() {
         return 0
     fi
 
-    log_step "Installing $name..."
-    statusbar_update "Installing $name..."
-    if brew install "$package" &>/dev/null; then
-        local version=$(get_brew_package_version "$package")
-        log_success "$name ${GREY}(${version})${NC}"
-        track_installed "$name"
-        statusbar_item_done
-        return 0
-    else
-        log_error "$name failed to install"
-        track_failed "$name"
-        statusbar_item_done
-        return 1
-    fi
+    while true; do
+        log_step "Installing $name..."
+        statusbar_update "Installing $name..."
+        if brew install "$package" 2>/dev/null; then
+            local version=$(get_brew_package_version "$package")
+            log_success "$name ${GREY}(${version})${NC}"
+            track_installed "$name"
+            statusbar_item_done
+            return 0
+        else
+            log_error "$name failed to install"
+            if prompt_yes_no "Try again?" "n"; then
+                continue
+            else
+                track_failed "$name"
+                statusbar_item_done
+                return 1
+            fi
+        fi
+    done
 }
 
 install_brew_cask() {
@@ -478,20 +484,26 @@ install_brew_cask() {
         return 0
     fi
 
-    log_step "Installing $app_name..."
-    statusbar_update "Installing $app_name..."
-    if brew install --cask "$cask" &>/dev/null; then
-        local version=$(get_cask_version "$cask")
-        log_success "$app_name ${GREY}(${version})${NC}"
-        track_installed "$app_name"
-        statusbar_item_done
-        return 0
-    else
-        log_error "$app_name failed to install"
-        track_failed "$app_name"
-        statusbar_item_done
-        return 1
-    fi
+    while true; do
+        log_step "Installing $app_name..."
+        statusbar_update "Installing $app_name..."
+        if brew install --cask "$cask" 2>/dev/null; then
+            local version=$(get_cask_version "$cask")
+            log_success "$app_name ${GREY}(${version})${NC}"
+            track_installed "$app_name"
+            statusbar_item_done
+            return 0
+        else
+            log_error "$app_name failed to install"
+            if prompt_yes_no "Try again?" "n"; then
+                continue
+            else
+                track_failed "$app_name"
+                statusbar_item_done
+                return 1
+            fi
+        fi
+    done
 }
 
 install_vscode_extension() {
@@ -513,19 +525,25 @@ install_vscode_extension() {
         return 0
     fi
 
-    log_step "Installing $name..."
-    statusbar_update "Installing $name..."
-    if code --install-extension "$extension" &>/dev/null; then
-        log_success "$name"
-        track_installed "$name"
-        statusbar_item_done
-        return 0
-    else
-        log_error "$name failed to install"
-        track_failed "$name"
-        statusbar_item_done
-        return 1
-    fi
+    while true; do
+        log_step "Installing $name..."
+        statusbar_update "Installing $name..."
+        if code --install-extension "$extension" 2>/dev/null; then
+            log_success "$name"
+            track_installed "$name"
+            statusbar_item_done
+            return 0
+        else
+            log_error "$name failed to install"
+            if prompt_yes_no "Try again?" "n"; then
+                continue
+            else
+                track_failed "$name"
+                statusbar_item_done
+                return 1
+            fi
+        fi
+    done
 }
 
 # =============================================================================

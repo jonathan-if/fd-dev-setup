@@ -10,24 +10,32 @@ if xcode-select -p &>/dev/null; then
     track_skipped "Xcode Command Line Tools"
     statusbar_item_done
 else
-    log_step "Installing Xcode Command Line Tools..."
-    xcode-select --install
+    while true; do
+        log_step "Installing Xcode Command Line Tools..."
+        xcode-select --install 2>/dev/null
 
-    # Wait for installation to complete
-    echo ""
-    echo -e "  ${YELLOW}Xcode Command Line Tools installer launched.${NC}"
-    echo -e "  ${YELLOW}Please complete the installation in the popup window.${NC}"
-    echo ""
-    printf "  Press Enter when installation is complete..."
-    tty_read
+        # Wait for installation to complete
+        echo ""
+        echo -e "  ${YELLOW}Xcode Command Line Tools installer launched.${NC}"
+        echo -e "  ${YELLOW}Please complete the installation in the popup window.${NC}"
+        echo ""
+        printf "  Press Enter when installation is complete..."
+        tty_read
 
-    if xcode-select -p &>/dev/null; then
-        log_success "Xcode Command Line Tools"
-        track_installed "Xcode Command Line Tools"
-    else
-        log_error "Xcode Command Line Tools installation failed"
-        track_failed "Xcode Command Line Tools"
-    fi
+        if xcode-select -p &>/dev/null; then
+            log_success "Xcode Command Line Tools"
+            track_installed "Xcode Command Line Tools"
+            break
+        else
+            log_error "Xcode Command Line Tools installation failed"
+            if prompt_yes_no "Try again?" "y"; then
+                continue
+            else
+                track_failed "Xcode Command Line Tools"
+                break
+            fi
+        fi
+    done
     statusbar_item_done
 fi
 
