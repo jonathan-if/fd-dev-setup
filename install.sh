@@ -5,9 +5,6 @@
 
 set -e
 
-# When piped from curl, stdin is the script itself. Reopen stdin from terminal.
-exec < /dev/tty
-
 # =============================================================================
 # COLORS
 # =============================================================================
@@ -41,7 +38,7 @@ echo ""
 echo -e "  Examples: ${CURRENT_USER}/fd, /fd, ~/fd"
 echo ""
 printf "Press Enter for default (${CURRENT_USER}/fd) or type your path: "
-read dev_path_input
+read dev_path_input < /dev/tty
 
 # Default to ~/fd
 DEV_PATH="${dev_path_input:-$HOME/fd}"
@@ -68,7 +65,7 @@ echo ""
 
 # Confirm
 printf "Continue? [Y/n]: "
-read -n 1 confirm
+read -n 1 confirm < /dev/tty
 echo ""
 if [[ "$confirm" =~ ^[Nn]$ ]]; then
     echo "Aborted."
@@ -136,7 +133,7 @@ echo ""
 # OFFER TO START SETUP NOW
 # =============================================================================
 printf "Start setup now? [Y/n]: "
-read -n 1 start_now
+read -n 1 start_now < /dev/tty
 echo ""
 
 if [[ ! "$start_now" =~ ^[Nn]$ ]]; then
@@ -148,7 +145,7 @@ if [[ ! "$start_now" =~ ^[Nn]$ ]]; then
 
     # Ask about profile
     printf "Include optional extras (jonathan profile)? [y/N]: "
-    read -n 1 use_profile
+    read -n 1 use_profile < /dev/tty
     echo ""
 
     if [[ "$use_profile" =~ ^[Yy]$ ]]; then
