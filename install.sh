@@ -5,6 +5,9 @@
 
 set -e
 
+# When piped from curl, stdin is the script itself. Reopen stdin from terminal.
+exec < /dev/tty
+
 # =============================================================================
 # COLORS
 # =============================================================================
@@ -60,7 +63,7 @@ fi
 DEV_PATH="${DEV_PATH/#\~/$HOME}"
 
 echo ""
-echo -e "  ${CYAN}→${NC} Will install to: ${BOLD}${DEV_PATH}/dev-auto-setup${NC}"
+echo -e "  ${CYAN}→${NC} Will install to: ${BOLD}${DEV_PATH}/fd-dev-setup${NC}"
 echo ""
 
 # Confirm
