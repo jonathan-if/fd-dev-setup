@@ -7,7 +7,7 @@ Automated macOS development environment setup for First Dollar engineering.
 Run this command on a fresh Mac:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/firstdollar/fd-dev-setup/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/jonathan-if/fd-dev-setup/main/install.sh | bash
 ```
 
 That's it! The installer will:

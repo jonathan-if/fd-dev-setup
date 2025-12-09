@@ -1,7 +1,7 @@
 #!/bin/bash
 # install.sh - Bootstrap script for First Dollar dev setup
 # Works on a completely fresh Mac with no dependencies
-# Usage: curl -fsSL https://raw.githubusercontent.com/firstdollar/dev-auto-setup/main/install.sh | bash
+# Usage: curl -fsSL https://raw.githubusercontent.com/jonathan-if/fd-dev-setup/main/install.sh | bash
 
 set -e
 
@@ -84,7 +84,7 @@ fi
 # =============================================================================
 # DOWNLOAD REPO (using curl + unzip - both native to macOS)
 # =============================================================================
-REPO_URL="https://github.com/firstdollar/fd-dev-setup/archive/refs/heads/main.zip"
+REPO_URL="https://github.com/jonathan-if/fd-dev-setup/archive/refs/heads/main.zip"
 ZIP_FILE="/tmp/fd-dev-setup.zip"
 EXTRACT_DIR="/tmp/fd-dev-setup-main"
 TARGET_DIR="${DEV_PATH}/fd-dev-setup"
