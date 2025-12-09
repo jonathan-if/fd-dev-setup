@@ -129,10 +129,7 @@ echo ""
 echo -e "For help: ${CYAN}./setup.sh --help${NC}"
 echo ""
 
-# Copy setup command to clipboard and change to target directory
-echo "./setup.sh" | pbcopy
-echo -e "${GREEN}✓${NC} Setup command copied to clipboard"
+# Copy setup command to clipboard
+echo "${TARGET_DIR}/setup.sh" | pbcopy
+echo -e "${GREEN}✓${NC} Command copied to clipboard - paste to start setup"
 echo ""
-
-cd "$TARGET_DIR"
-exec $SHELL
