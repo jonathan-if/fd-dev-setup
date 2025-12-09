@@ -10,6 +10,15 @@ SKIP_UPDATES=${SKIP_UPDATES:-false}
 UPDATE_MODE_SET=${UPDATE_MODE_SET:-false}
 
 # =============================================================================
+# TERMINAL INPUT
+# =============================================================================
+# Read from /dev/tty to support both direct execution and curl|bash piped execution.
+# When piped, stdin is the script itself, so we must explicitly read from the terminal.
+tty_read() {
+    read "$@" < /dev/tty
+}
+
+# =============================================================================
 # STATUS BAR - Disabled for now (placeholder functions)
 # =============================================================================
 statusbar_init() { :; }
@@ -189,7 +198,8 @@ prompt_choice() {
         fi
     done
 
-    read -p "  Enter choice [1]: " choice
+    printf "  Enter choice [1]: "
+    tty_read choice
     choice=${choice:-1}
 
     if [[ "$choice" =~ ^[0-9]+$ ]] && [[ "$choice" -ge 1 ]] && [[ "$choice" -le "${#options[@]}" ]]; then
@@ -206,12 +216,12 @@ prompt_yes_no() {
 
     if [[ "$default" == "y" ]]; then
         printf "  ${prompt} [Y/n]: "
-        read -n 1 choice
+        tty_read -n 1 choice
         echo ""
         choice=${choice:-y}
     else
         printf "  ${prompt} [y/N]: "
-        read -n 1 choice
+        tty_read -n 1 choice
         echo ""
         choice=${choice:-n}
     fi
@@ -251,7 +261,7 @@ prompt_update_mode() {
     echo -e "    ${BOLD}3)${NC} Skip all updates"
 
     printf "  Enter choice [1]: "
-    read -n 1 choice
+    tty_read -n 1 choice
     echo ""
 
     case "$choice" in
@@ -748,7 +758,7 @@ prompt_choice_or_default() {
     done
 
     printf "  Enter choice [${default}]: "
-    read -n 1 choice
+    tty_read -n 1 choice
     echo ""
 
     # Return user choice or default
@@ -961,11 +971,11 @@ prompt_and_save() {
     while [[ "$valid" == "false" ]]; do
         if [[ -n "$current_value" ]]; then
             printf "  ${prompt_text} ${GREY}[${current_value}]${NC}: "
-            read input
+            tty_read input
             input="${input:-$current_value}"
         else
             printf "  ${prompt_text}: "
-            read input
+            tty_read input
         fi
 
         # Validate if validator specified
@@ -1041,7 +1051,7 @@ prompt_and_save_optional() {
     else
         printf "  ${prompt_text} ${GREY}(optional, press Enter to skip)${NC}: "
     fi
-    read input
+    tty_read input
     input="${input:-$current_value}"
 
     # Save to .env (even if empty, to show it was asked)

@@ -18,7 +18,8 @@ else
     echo -e "  ${YELLOW}Xcode Command Line Tools installer launched.${NC}"
     echo -e "  ${YELLOW}Please complete the installation in the popup window.${NC}"
     echo ""
-    read -p "  Press Enter when installation is complete..."
+    printf "  Press Enter when installation is complete..."
+    tty_read
 
     if xcode-select -p &>/dev/null; then
         log_success "Xcode Command Line Tools"

@@ -49,7 +49,8 @@ if [[ "$MANUAL_APPS" == "true" ]]; then
         open "$MS365_URL"
     fi
 
-    read -p "  Press Enter when you've finished installing apps..."
+    printf "  Press Enter when you've finished installing apps..."
+    tty_read
 
 else
     # Cask mode - install via Homebrew
