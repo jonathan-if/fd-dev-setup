@@ -117,7 +117,7 @@ chmod +x "$TARGET_DIR/install.sh"
 echo ""
 echo -e "${GREEN}✓${NC} Download complete!"
 echo ""
-echo -e "${BOLD}Next steps:${NC}"
+echo -e "To run setup:"
 echo ""
 echo -e "  ${CYAN}cd ${TARGET_DIR}${NC}"
 echo -e "  ${CYAN}./setup.sh${NC}                        # Run setup"
@@ -129,28 +129,10 @@ echo ""
 echo -e "For help: ${CYAN}./setup.sh --help${NC}"
 echo ""
 
-# =============================================================================
-# OFFER TO START SETUP NOW
-# =============================================================================
-printf "Start setup now? [Y/n]: "
-read -n 1 start_now < /dev/tty
+# Copy setup command to clipboard and change to target directory
+echo "./setup.sh" | pbcopy
+echo -e "${GREEN}✓${NC} Setup command copied to clipboard"
 echo ""
 
-if [[ ! "$start_now" =~ ^[Nn]$ ]]; then
-    echo ""
-    cd "$TARGET_DIR"
-
-    # Export DEV_PATH so setup.sh and its scripts know where repos go
-    export DEV_DIR="$DEV_PATH"
-
-    # Ask about profile
-    printf "Include optional extras (jonathan profile)? [y/N]: "
-    read -n 1 use_profile < /dev/tty
-    echo ""
-
-    if [[ "$use_profile" =~ ^[Yy]$ ]]; then
-        exec ./setup.sh --profile jonathan
-    else
-        exec ./setup.sh
-    fi
-fi
+cd "$TARGET_DIR"
+exec $SHELL
